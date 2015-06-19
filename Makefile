@@ -1,4 +1,4 @@
-# Makefile for gpio
+# Makefile for spi
 CC = gcc
 objects = main.o bcm2835.o spi.o
 
