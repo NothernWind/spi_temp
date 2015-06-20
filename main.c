@@ -58,7 +58,7 @@ int main(int argc, char **argv)
 		ems22a_data.bits.S3,
 		ems22a_data.bits.S4,
 		ems22a_data.bits.S5,
-		ems22a_data.bits.P1);
+		ems22a_data.bits.P1		);
 	}
 	return 0;
 }

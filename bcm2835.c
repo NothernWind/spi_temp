@@ -47,7 +47,7 @@ int bcm2835_gpio_map(void)
  * 
  ********************************************************************
  */
-int bcm2835_map_spi0(void) 
+int bcm2835_spi0_map(void)
 {
 	printf("Map SPI0\n");
 	if (periph_map(&spi_dsc, BCM2835_PERIPH_BASE | SPI_OFFSET) == -1) {

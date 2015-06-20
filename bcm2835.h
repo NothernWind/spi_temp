@@ -262,6 +262,8 @@ extern t_gpio * bcm2835_GPIO;
 // Public Prototypes ------------------------------------------------
 int bcm2835_periph_map(struct bcm2835_periph * pr, unsigned long addr) ;
 void bcm2835_periph_unmap(struct bcm2835_periph * pr);
-int bcm2835_map_spi0(void);
+
+int bcm2835_gpio_map(void);
+int bcm2835_spi0_map(void);
 
 #endif // BCM2835_H
