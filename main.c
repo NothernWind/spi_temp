@@ -61,6 +61,12 @@ int main(int argc, char **argv)
 		ems22a_data.bits.P1		);
 	}
 
+	while(1){
+		ems22a_data.all = spi0_poll_read_EMS22A();
+		printf(
+		"Value: %d;\n", ems22a_data.bits.DATA);
+	}
+
 	spi0_unidir_poll_deinit();
 
 	return 0;
