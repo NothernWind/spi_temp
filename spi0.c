@@ -16,14 +16,64 @@
 #include "spi0.h"
 #include "bcm2835.h"
 
-void spi0_unidir_poll_init(int speed, int flags)
+/*!
+ ********************************************************************
+ * \brief
+ * 
+ ********************************************************************
+ */
+int spi0_unidir_poll_init(int ckdiv, int flags)
 {
+	if (bcm2835_gpio_map() == -1) return -1;
+	if (bcm2835_spi0_map() == -1) return -1;
+	
+	// Для начала настроим порты для SPI0
+	printf("Config GPIO Alternate function for SPI\n");
+	
+	bcm2835_GPIO->GPFSEL0.bits.FSELn9 = GPIO_FSEL_ALT0; // 21 GPIO9  SPI0_MISO
+	bcm2835_GPIO->GPFSEL1.bits.FSELn0 = GPIO_FSEL_ALT0; // 19 GPIO10 SPI0_MOSI
+	bcm2835_GPIO->GPFSEL1.bits.FSELn1 = GPIO_FSEL_ALT0; // 23 GPIO11 SPI_SCLK
+	
+	// А это Chip select GPIO8
+	bcm2835_GPIO->GPFSEL0.bits.FSELn8 = GPIO_FSEL_OUTPUT;
+	bcm2835_GPIO->GPSET0.bits.GPIO8 = 1;
+	
+	if (flags & SPI0_CHPA_BEGINN)
+		bcm2835_SPI->CSR.bits.CHPA = 1;
+
+	if (flags & SPI0_CPOL_HIGH)
+		bcm2835_SPI->CSR.bits.CPOL = 1;
+	
+	bcm2835_SPI->CSR.bits.CLEAR = 0x3;
+	bcm2835_SPI->CLR = ckdiv;
+	bcm2835_SPI->CSR.bits.TE_EN = 1;
+	
+	return 0;
 }
 
-void spi0_unidir_dma_init(int speed, int flags)
+void spi0_unidir_poll_deinit(void) 
 {
+	printf("Deinit SPI\n");
+
+	bcm2835_GPIO->GPFSEL0.bits.FSELn9 = GPIO_FSEL_INPUT; // 21 GPIO9  SPI0_MISO
+	bcm2835_GPIO->GPFSEL1.bits.FSELn0 = GPIO_FSEL_INPUT; // 19 GPIO10 SPI0_MOSI
+	bcm2835_GPIO->GPFSEL1.bits.FSELn1 = GPIO_FSEL_INPUT; // 23 GPIO11 SPI_SCLK
+	bcm2835_SPI->CSR.all = 0;
+
+	printf("Unmap GPIO\n");
+	bcm2835_periph_unmap(&gpio_dsc);
+	printf("Unmap SPI\n");
+	bcm2835_periph_unmap(&spi_dsc);
 }
 
+void spi0_unidir_dma_init(int speed, int flags){}
+
+/*!
+ ********************************************************************
+ * brief
+ *
+ ********************************************************************
+ */
 unsigned char spi0_unidir_poll_transfer(unsigned char data)
 {
 	unsigned char temp;
@@ -36,6 +86,20 @@ unsigned char spi0_unidir_poll_transfer(unsigned char data)
 	return temp;
 }
 
-void spi_unidir_poll_buffer(const char * out, char * in, int size)
+void spi_unidir_poll_buffer(const char * out, char * in, int size){}
+
+/*!
+ ********************************************************************
+ * brief
+ *
+ ********************************************************************
+ */
+unsigned short spi0_poll_read_EMS22A(void)
 {
+	unsigned short temp;
+	bcm2835_GPIO->GPSET0.bits.GPIO8 = 0;
+	temp = spi0_unidir_poll_transfer(0xFF) << 8;
+	temp |= spi0_unidir_poll_transfer(0xFF);
+	bcm2835_GPIO->GPSET0.bits.GPIO8 = 1;
+	return temp;
 }

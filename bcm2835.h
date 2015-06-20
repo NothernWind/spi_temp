@@ -11,6 +11,8 @@
 #ifndef BCM2835_H
 #define BCM2835_H
 
+// Defines ----------------------------------------------------------
+#define CPU_CORE_CLOCK	250000000
 /*!
  ********************************************************************
  * Physical addresses range from 0x20000000 to 0x20FFFFFF for 
@@ -258,8 +260,8 @@ extern t_spi * bcm2835_SPI;
 extern t_gpio * bcm2835_GPIO;
 
 // Public Prototypes ------------------------------------------------
-int periph_map(struct bcm2835_periph * pr, unsigned long addr) ;
-void periph_unmap(struct bcm2835_periph * pr);
-int init_piriph(void);
+int bcm2835_periph_map(struct bcm2835_periph * pr, unsigned long addr) ;
+void bcm2835_periph_unmap(struct bcm2835_periph * pr);
+int bcm2835_map_spi0(void);
 
 #endif // BCM2835_H
