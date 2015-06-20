@@ -98,8 +98,16 @@ unsigned short spi0_poll_read_EMS22A(void)
 {
 	unsigned short temp;
 	bcm2835_GPIO->GPCLR0.bits.GPIO8 = 1;
-	temp = spi0_unidir_poll_transfer(0xFF) << 8;
-	temp |= spi0_unidir_poll_transfer(0xFF);
+	
+	bcm2835_SPI->CSR.bits.TA = 1;
+	bcm2835_SPI->FIFO = 0xFF;
+	while (bcm2835_SPI->CSR.bits.DONE == 0);
+	temp = ((unsigned short)bcm2835_SPI->FIFO) << 8;
+	bcm2835_SPI->FIFO = 0xFF;
+	while (bcm2835_SPI->CSR.bits.DONE == 0);
+	temp |= (unsigned short)bcm2835_SPI->FIFO;
+	bcm2835_SPI->CSR.bits.TA = 0;
+	
 	bcm2835_GPIO->GPSET0.bits.GPIO8 = 1;
 	return temp;
 }

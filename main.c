@@ -38,7 +38,7 @@ int main(int argc, char **argv)
 	int i, f;
 	unsigned short ems22a_value;
 
-	if (spi0_unidir_poll_init( 0x0400, SPI0_CPOL_HIGH |
+	if (spi0_unidir_poll_init(249, SPI0_CPOL_HIGH |
 			SPI0_CHPA_BEGINN) == -1) return -1;
 
 	for (i = 0; i < 8; i++) {
