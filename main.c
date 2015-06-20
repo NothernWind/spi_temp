@@ -60,6 +60,9 @@ int main(int argc, char **argv)
 		ems22a_data.bits.S5,
 		ems22a_data.bits.P1		);
 	}
+
+	spi0_unidir_poll_deinit();
+
 	return 0;
 }
 

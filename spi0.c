@@ -51,7 +51,7 @@ int spi0_unidir_poll_init(int ckdiv, int flags)
 	return 0;
 }
 
-void spi0_unidir_poll_deinit(void) 
+void spi0_unidir_poll_deinit(void)
 {
 	printf("Deinit SPI\n");
 
@@ -77,7 +77,7 @@ void spi0_unidir_dma_init(int speed, int flags){}
 unsigned char spi0_unidir_poll_transfer(unsigned char data)
 {
 	unsigned char temp;
-	bcm2835_SPI->CSR.bits.TE_EN = 1;
+	//bcm2835_SPI->CSR.bits.TE_EN = 1;
 	bcm2835_SPI->CSR.bits.TA = 1;
 	bcm2835_SPI->FIFO = data;
 	while (bcm2835_SPI->CSR.bits.DONE == 0);
@@ -97,7 +97,7 @@ void spi_unidir_poll_buffer(const char * out, char * in, int size){}
 unsigned short spi0_poll_read_EMS22A(void)
 {
 	unsigned short temp;
-	bcm2835_GPIO->GPSET0.bits.GPIO8 = 0;
+	bcm2835_GPIO->GPCLR0.bits.GPIO8 = 0;
 	temp = spi0_unidir_poll_transfer(0xFF) << 8;
 	temp |= spi0_unidir_poll_transfer(0xFF);
 	bcm2835_GPIO->GPSET0.bits.GPIO8 = 1;

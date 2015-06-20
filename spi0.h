@@ -21,5 +21,6 @@
 int spi0_unidir_poll_init(int ckdiv, int flags);
 unsigned char spi0_unidir_poll_transfer(unsigned char data);
 unsigned short spi0_poll_read_EMS22A(void);
+void spi0_unidir_poll_deinit(void);
 
 #endif // SPI_H
