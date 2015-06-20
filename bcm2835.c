@@ -65,7 +65,7 @@ int bcm2835_spi0_map(void)
  * 
  ********************************************************************
  */
-int periph_map(struct bcm2835_periph * pr, unsigned long addr)
+int bcm2835_periph_map(struct bcm2835_periph * pr, unsigned long addr)
 {
 	if ((pr->fd = open("/dev/mem", O_RDWR | O_SYNC)) < 0) {
 		printf("Failed to open /dev/mem, try checking premissions.\n");
@@ -99,7 +99,7 @@ int periph_map(struct bcm2835_periph * pr, unsigned long addr)
  * 
  ********************************************************************
  */
-void periph_unmap(struct bcm2835_periph * pr) 
+void bcm2835_periph_unmap(struct bcm2835_periph * pr)
 {
 	munmap(pr->map, 4096);
 	close(pr->fd);
