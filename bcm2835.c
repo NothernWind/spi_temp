@@ -32,7 +32,7 @@ t_spi * bcm2835_SPI;
 int bcm2835_gpio_map(void) 
 {
 	printf("Map GPIO\n");
-	if (periph_map(&gpio_dsc, BCM2835_PERIPH_BASE | GPIO_OFFSET) == -1) {
+	if (bcm2835_periph_map(&gpio_dsc, BCM2835_PERIPH_BASE | GPIO_OFFSET) == -1) {
 		printf("Failed to map the physical GPIO registers into the virtual memory space.\n");
 		return -1;
 	}
@@ -50,7 +50,7 @@ int bcm2835_gpio_map(void)
 int bcm2835_spi0_map(void)
 {
 	printf("Map SPI0\n");
-	if (periph_map(&spi_dsc, BCM2835_PERIPH_BASE | SPI_OFFSET) == -1) {
+	if (bcm2835_periph_map(&spi_dsc, BCM2835_PERIPH_BASE | SPI_OFFSET) == -1) {
 		printf("Failed to map the physical SPI registers into the virtual memory space.\n");
 		return -1;
 	}
