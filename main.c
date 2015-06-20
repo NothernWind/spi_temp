@@ -27,7 +27,7 @@ typedef union _t_ems22a_data{
 		unsigned S3:1;
 		unsigned S2:1;
 		unsigned S1:1;
-		unsigned DATA:9;
+		unsigned DATA:10;
 	}bits;
 } t_ems22a_data;
 
@@ -35,8 +35,9 @@ t_ems22a_data ems22a_data;
 
 int main(int argc, char **argv) 
 {
-	int i;
+	int i, f;
 	unsigned short ems22a_value;
+
 	if (spi0_unidir_poll_init( 0x0400, SPI0_CPOL_HIGH |
 			SPI0_CHPA_BEGINN) == -1) return -1;
 
@@ -60,8 +61,17 @@ int main(int argc, char **argv)
 		ems22a_data.bits.S5,
 		ems22a_data.bits.P1		);
 	}
+	f = 0;
+	bcm2835_GPIO->GPFSEL2.bits.FSELn6 = GPIO_FSEL_OUTPUT;
 
-	while(1){
+	while(1) {
+		if (f == 0) {
+			f = 1;
+			bcm2835_GPIO->GPSET0.bits.GPIO26 = 1;
+		} else {
+			f = 0;
+			bcm2835_GPIO->GPCLR0.bits.GPIO26 = 1;
+		}
 		ems22a_data.all = spi0_poll_read_EMS22A();
 		printf(
 		"Value: %d;\n", ems22a_data.bits.DATA);
