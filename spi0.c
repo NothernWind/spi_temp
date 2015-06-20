@@ -97,7 +97,7 @@ void spi_unidir_poll_buffer(const char * out, char * in, int size){}
 unsigned short spi0_poll_read_EMS22A(void)
 {
 	unsigned short temp;
-	bcm2835_GPIO->GPCLR0.bits.GPIO8 = 0;
+	bcm2835_GPIO->GPCLR0.bits.GPIO8 = 1;
 	temp = spi0_unidir_poll_transfer(0xFF) << 8;
 	temp |= spi0_unidir_poll_transfer(0xFF);
 	bcm2835_GPIO->GPSET0.bits.GPIO8 = 1;
