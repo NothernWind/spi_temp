@@ -21,13 +21,13 @@
 typedef union _t_ems22a_data{
 	unsigned short all;
 	struct {
-		unsigned P1:1;
-		unsigned S5:1;
-		unsigned S4:1;
-		unsigned S3:1;
-		unsigned S2:1;
-		unsigned S1:1;
 		unsigned DATA:10;
+		unsigned S1:1;
+		unsigned S2:1;
+		unsigned S3:1;
+		unsigned S4:1;
+		unsigned S5:1;
+		unsigned P1:1;
 	}bits;
 } t_ems22a_data;
 
